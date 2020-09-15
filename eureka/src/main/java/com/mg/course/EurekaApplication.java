@@ -10,9 +10,10 @@ import org.springframework.core.env.Environment;
 
 @SpringBootApplication
 @EnableEurekaServer
+@Slf4j
 public class EurekaApplication {
 
-    private static final Logger log = LoggerFactory.getLogger(EurekaApplication.class);
+    //private static final Logger log = LoggerFactory.getLogger(EurekaApplication.class);
     public static void main(String[] args) {
         SpringApplication app = new SpringApplication(EurekaApplication.class);
         Environment env = app.run(args).getEnvironment();
