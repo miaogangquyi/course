@@ -11,6 +11,7 @@ import org.springframework.core.env.Environment;
 @SpringBootApplication
 @EnableEurekaServer
 @Slf4j
+
 public class EurekaApplication {
 
     //private static final Logger log = LoggerFactory.getLogger(EurekaApplication.class);
