@@ -49,7 +49,7 @@
 															<span class="lbl">记住我</span>
 														</label>
 
-														<button type="button" class="width-35 pull-right btn btn-sm btn-primary">
+														<button type="button" class="width-35 pull-right btn btn-sm btn-primary" v-on:click="login()">
 															<i class="ace-icon fa fa-key"></i>
 															<span class="bigger-110">登录</span>
 														</button>
@@ -76,11 +76,29 @@
 </template>
 
 <script>
-$('body').attr('class', 'login-layout light-login');
+  $('body').attr('class', 'login-layout light-login');
+  export default {
+	name: 'login',
+	mounted: function() {
+      let _this = this;
+      $("body").removeClass("no-skin");
+      $("body").attr("class", "login-layout light-login");
+      // console.log("login");
 
-export default {
-  name: 'login',
+      // 从缓存中获取记住的用户名密码，如果获取不到，说明上一次没有勾选“记住我”
+      // let rememberUser = LocalStorage.get(LOCAL_KEY_REMEMBER_USER);
+      // if (rememberUser) {
+      //   _this.user = rememberUser;
+      // }
 
-}
+      // 初始时加载一次验证码图片
+      // _this.loadImageCode();
+    },
+	methods: {
+		login () {
+			this.$router.push("/admin")
+		}
+	}
+  }
 </script>
 
