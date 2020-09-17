@@ -1,11 +1,6 @@
 package com.course.system.controller;
 
-import com.course.server.service.TestService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 /**
  * @Author: miaogang
@@ -14,12 +9,6 @@ import java.util.List;
  */
 @RestController
 public class SystemController {
-    @Autowired
-    TestService testService;
-    @RequestMapping("/test")
-    public List test(){
-        return testService.list();
 
-    }
 }
 

@@ -8,6 +8,9 @@ import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.core.env.Environment;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @SpringBootApplication
 @EnableEurekaClient
 @Slf4j
@@ -22,6 +25,7 @@ public class SystemApplication {
         log.info("启动成功");
         log.info("System地址\tHttp://127.0.0.1:{}",env.getProperty("server.port"));
         //SpringApplication.run(EurekaApplication.class, args);
+
     }
 
 

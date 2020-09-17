@@ -26,7 +26,7 @@
         <spring-cloud.version>Hoxton.RELEASE</spring-cloud.version>
     </properties>
 
-
+    <!-- 管理jar包版本 -->
     <dependencyManagement>
         <dependencies>
             <dependency>
