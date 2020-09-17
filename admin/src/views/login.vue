@@ -59,15 +59,15 @@
 												</fieldset>
 											</form>
 
-										
+
 										</div><!-- /.widget-main -->
 
-										
+
 									</div><!-- /.widget-body -->
 								</div><!-- /.login-box -->
 							</div><!-- /.position-relative -->
 
-							
+
 						</div>
 					</div><!-- /.col -->
 				</div><!-- /.row -->
@@ -76,11 +76,11 @@
 </template>
 
 <script>
-$('body').attr('class', 'login-layout light-login'); 
+$('body').attr('class', 'login-layout light-login');
 
 export default {
-  name: 'App',
-  
+  name: 'login',
+
 }
 </script>
 
