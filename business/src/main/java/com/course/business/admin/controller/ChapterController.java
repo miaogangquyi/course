@@ -1,6 +1,5 @@
-package com.course.business.controller;
+package com.course.business.admin.controller;
 
-import com.course.server.domain.Chapter;
 import com.course.server.dto.ChapterDto;
 import com.course.server.service.ChapterService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +11,7 @@ import java.util.List;
 /**
  * @Author: miaogang
  * @Date: 2020年09月15日
- * @Description: 这是system测试controller
+ * @Description: 大章controller
  */
 @RestController
 public class ChapterController {
