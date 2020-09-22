@@ -9,30 +9,28 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>server</artifactId>
-
-
+    <artifactId>generator</artifactId>
     <dependencies>
+        <!-- 模板引擎freemarker -->
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
+            <groupId>org.freemarker</groupId>
+            <artifactId>freemarker</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.mybatis.spring.boot</groupId>
-            <artifactId>mybatis-spring-boot-starter</artifactId>
-        </dependency>
+
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
         </dependency>
+
+        <!-- 读xml -->
         <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
+            <groupId>org.dom4j</groupId>
+            <artifactId>dom4j</artifactId>
         </dependency>
-        <!-- 分页插件 -->
+
         <dependency>
-            <groupId>com.github.pagehelper</groupId>
-            <artifactId>pagehelper-spring-boot-starter</artifactId>
+            <groupId>com.mg</groupId>
+            <artifactId>server</artifactId>
         </dependency>
     </dependencies>
 
