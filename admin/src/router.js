@@ -34,17 +34,18 @@ export default new Router({
         component: Login
     }
     , {
-        path: "/admin",
-        // name: "admin",
+        path: "/",
+        name: "admin",
         component: Admin,
-        // meta: {
-        //     loginRequire: true
-        // },
         children: [{
             path: "welcome",
-            // name: "welcome",
+            name: "welcome",
             component: Welcome,
-        }
+        }, {
+            path: "business/chapter",
+            name: "business/chapter",
+            component: Chapter,
+        }]
         // ,
         // {
     // //         path: "business/category",
@@ -55,11 +56,7 @@ export default new Router({
     // //         name: "business/course",
     // //         component: Course,
     // //     }
-            , {
-            path: "chapter",
-            // name: "business/chapter",
-            component: Chapter,
-        }]
+
             // , {
     // //          path: "business/section",
     // //         name: "business/section",
