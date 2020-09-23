@@ -14,7 +14,7 @@ public class EurekaApplication {
 
     //private static final Logger log = LoggerFactory.getLogger(EurekaApplication.class);
     public static void main(String[] args) {
-        SpringApplication app = new SpringApplication();
+        SpringApplication app = new SpringApplication(EurekaApplication.class);
         Environment env = app.run(args).getEnvironment();
         log.info("启动成功");
         log.info("Eureka地址\tHttp://127.0.0.1:{}",env.getProperty("server.port"));
