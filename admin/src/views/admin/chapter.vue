@@ -33,7 +33,7 @@
                             <i class="ace-icon fa fa-pencil bigger-120"></i>
                         </button>
 
-                        <button class="btn btn-xs btn-danger">
+                        <button v-on:click="del(chapter.id)" class="btn btn-xs btn-danger">
                             <i class="ace-icon fa fa-trash-o bigger-120"></i>
                         </button>
 
@@ -173,6 +173,30 @@
                         // Toast.success("保存成功！");
                     // } else {
                     //     // Toast.warning(resp.message)
+                    }
+                })
+            },
+            del(id) {
+                let _this = this;
+
+                // 保存校验
+                // if (!Validator.require(_this.chapter.name, "名称")
+                //     || !Validator.length(_this.chapter.courseId, "课程ID", 1, 8)) {
+                //     return;
+                // }
+                // _this.chapter.courseId = _this.course.id;
+                //
+                // Loading.show();
+                _this.$ajax.delete('http://127.0.0.1:9000/business/admin/chapter/delete/'+id).then((response)=>{
+                    // Loading.hide();
+                    // console.log("save"+JSON.stringify(response))
+                    let resp = response.data;
+                    if (resp.success) {
+                        // $("#form-modal").modal("hide");
+                        _this.list(1);
+                        // Toast.success("保存成功！");
+                        // } else {
+                        //     // Toast.warning(resp.message)
                     }
                 })
             }
