@@ -83,7 +83,7 @@
             </tr>
             </tbody>
         </table>
-        <div class="modal fade" tabindex="-1" role="dialog">
+        <div id="form-modal" class="modal fade" tabindex="-1" role="dialog">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -136,7 +136,7 @@
         methods:{
             add() {
                 let _this = this;
-                $(".modal").modal("show")
+                $("#form-modal").modal("show")
 
             },
            /**
@@ -149,8 +149,8 @@
                 size: _this.$refs.pagination.size,
             }).then((response)=>{
              console.log("查询大章结果："+JSON.stringify(response))
-                _this.chapters = response.data.list
-                _this.$refs.pagination.render(page, response.data.total);
+                _this.chapters = response.data.content.list
+                _this.$refs.pagination.render(page, response.data.content.total);
             })
           },
             save(page) {
@@ -166,14 +166,15 @@
                 // Loading.show();
                 _this.$ajax.post('http://127.0.0.1:9000/business/admin/chapter/save', _this.chapter).then((response)=>{
                     // Loading.hide();
-                    // let resp = response.data;
-                    // if (resp.success) {
-                        $(".modal").modal("hide");
+                    console.log("save"+JSON.stringify(response))
+                    let resp = response.data;
+                    if (resp.success) {
+                        $("#form-modal").modal("hide");
                         _this.list(1);
                         // Toast.success("保存成功！");
                     // } else {
                     //     // Toast.warning(resp.message)
-                    // }
+                    }
                 })
             }
         }
