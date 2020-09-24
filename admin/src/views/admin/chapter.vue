@@ -1,15 +1,23 @@
 <template>
-    <table id="simple-table" class="table  table-bordered table-hover">
-        <thead>
+    <div>
+        <p>
+            <button v-on:click="list(1)" class="btn btn-white btn-default btn-round">
+                <i class="ace-icon fa fa-refresh"></i>
+                刷新
+            </button>
+        </p>
+        <pagination ref="pagination" v-bind:list="list"> </pagination>
+        <table id="simple-table" class="table  table-bordered table-hover">
+            <thead>
             <tr>
                 <th>ID</th>
                 <th>名称</th>
                 <th>课程ID</th>
                 <th>操作</th>
             </tr>
-        </thead>
+            </thead>
 
-        <tbody>
+            <tbody>
             <tr v-for="chapter in chapters">
                 <td >{{chapter.id}}</td>
                 <td >{{chapter.name}}</td>
@@ -70,11 +78,17 @@
             </tr>
 
 
-        </tbody>
-    </table>
+            </tbody>
+        </table>
+
+    </div>
 </template>
 <script>
+    import Pagination from "../../components/pagination";
     export default {
+        components: {
+            Pagination
+        },
         name: "chapter",
         data: function() {
             return {
@@ -92,9 +106,13 @@
            */
           list(page) {
             let _this = this;
-            this.$ajax.get('http://127.0.0.1:9000/business/admin/chapter/list').then((response)=>{
+            this.$ajax.post('http://127.0.0.1:9000/business/admin/chapter/list',{
+                page:page,
+                size:_this.$refs.pagination.size,
+            }).then((response)=>{
              console.log("查询大章结果："+JSON.stringify(response))
-                _this.chapters = response.data
+                _this.chapters = response.data.list
+                _this.$refs.pagination.render(page, response.data.total);
             })
           }
         }
