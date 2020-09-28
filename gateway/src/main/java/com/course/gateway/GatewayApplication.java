@@ -20,7 +20,7 @@ public class GatewayApplication {
     public static void main(String[] args) {
         SpringApplication app = new SpringApplication(GatewayApplication.class);
         Environment env = app.run(args).getEnvironment();
-        log.info("启动成功");
+        log.info("启动成功1111");
         log.info("Gateway 地址\tHttp://127.0.0.1:{}",env.getProperty("server.port"));
         //SpringApplication.run(EurekaApplication.class, args);
     }
