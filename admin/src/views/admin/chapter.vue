@@ -57,7 +57,7 @@
                                 <li>
                                     <a href="#" class="tooltip-success" data-rel="tooltip" title="Edit">
                                         <span class="green">
-                                            <i class="ace-icon fa fa-pencil-square-o bigger-120"></i>
+                                             <i class="ace-icon fa fa-pencil-square-o bigger-120"></i>
                                         </span>
                                     </a>
                                 </li>
@@ -170,7 +170,7 @@
                     if (resp.success) {
                         $("#form-modal").modal("hide");
                         _this.list(1);
-                        // Toast.success("保存成功！");
+                        Toast.success("保存成功！");
                     // } else {
                     //     // Toast.warning(resp.message)
                     }
@@ -195,12 +195,7 @@
                             if (resp.success) {
                                 // $("#form-modal").modal("hide");
                                 _this.list(1);
-                                Swal.fire(
-                                    '删除成功!',
-                                    '删除成功.',
-                                    'success'
-                                )
-                                // Toast.success("保存成功！");
+                                Toast.success("保存成功！");
                                 // } else {
                                 //     // Toast.warning(resp.message)
                             }
