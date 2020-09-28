@@ -178,31 +178,46 @@
             },
             del(id) {
                 let _this = this;
-                Swal.fire({
-                    title: '确认删除?',
-                    text: "删除后不可恢复，确认删除？",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Yes, delete it!'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        _this.$ajax.delete('http://127.0.0.1:9000/business/admin/chapter/delete/'+id).then((response)=>{
-                            // Loading.hide();
-                            // console.log("save"+JSON.stringify(response))
-                            let resp = response.data;
-                            if (resp.success) {
-                                // $("#form-modal").modal("hide");
-                                _this.list(1);
-                                Toast.success("保存成功！");
-                                // } else {
-                                //     // Toast.warning(resp.message)
-                            }
-                        })
-
-                    }
+                Confirm.show("删除大章后不可恢复，确认删除？",function () {
+                    Loading.show()
+                    _this.$ajax.delete('http://127.0.0.1:9000/business/admin/chapter/delete/'+id).then((response)=>{
+                        Loading.hide();
+                        // console.log("save"+JSON.stringify(response))
+                        let resp = response.data;
+                        if (resp.success) {
+                            // $("#form-modal").modal("hide");
+                            _this.list(1);
+                            Toast.success("保存成功！");
+                            // } else {
+                            //     // Toast.warning(resp.message)
+                        }
+                    })
                 })
+                // Swal.fire({
+                //     title: '确认删除?',
+                //     text: "删除后不可恢复，确认删除？",
+                //     icon: 'warning',
+                //     showCancelButton: true,
+                //     confirmButtonColor: '#3085d6',
+                //     cancelButtonColor: '#d33',
+                //     confirmButtonText: 'Yes, delete it!'
+                // }).then((result) => {
+                //     if (result.isConfirmed) {
+                //         _this.$ajax.delete('http://127.0.0.1:9000/business/admin/chapter/delete/'+id).then((response)=>{
+                //             // Loading.hide();
+                //             // console.log("save"+JSON.stringify(response))
+                //             let resp = response.data;
+                //             if (resp.success) {
+                //                 // $("#form-modal").modal("hide");
+                //                 _this.list(1);
+                //                 Toast.success("保存成功！");
+                //                 // } else {
+                //                 //     // Toast.warning(resp.message)
+                //             }
+                //         })
+                //
+                //     }
+                // })
 
                 // 保存校验
                 // if (!Validator.require(_this.chapter.name, "名称")
