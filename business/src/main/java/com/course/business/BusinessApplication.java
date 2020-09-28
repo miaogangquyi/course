@@ -17,12 +17,12 @@ import org.springframework.core.env.Environment;
 @MapperScan("com.course.server.mapper")
 public class BusinessApplication {
 
-    private static final Logger log = LoggerFactory.getLogger(BusinessApplication.class);
+    //private static final Logger log = LoggerFactory.getLogger(BusinessApplication.class);
     public static void main(String[] args) {
 
         SpringApplication app = new SpringApplication(BusinessApplication.class);
         Environment env = app.run(args).getEnvironment();
-        log.info("启动成功");
+        //log.info("启动成功");
         log.info("Business 地址\tHttp://127.0.0.1:{}", env.getProperty("server.port"));
         //SpringApplication.run(EurekaApplication.class, args);
     }

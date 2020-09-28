@@ -29,20 +29,20 @@ public class GatewayApplication {
      * 配置跨域
      * @return
      */
-    @Bean
-    public CorsWebFilter corsFilter() {
-        CorsConfiguration config = new CorsConfiguration();
-
-        config.setAllowCredentials(Boolean.TRUE);
-        config.addAllowedMethod("*");
-        config.addAllowedOrigin("*");
-        config.addAllowedHeader("*");
-        config.setMaxAge(3600L);
-
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource(new PathPatternParser());
-        source.registerCorsConfiguration("/**", config);
-
-        return new CorsWebFilter(source);
-    }
+    //@Bean
+    //public CorsWebFilter corsFilter() {
+    //    CorsConfiguration config = new CorsConfiguration();
+    //
+    //    config.setAllowCredentials(Boolean.TRUE);
+    //    config.addAllowedMethod("*");
+    //    config.addAllowedOrigin("*");
+    //    config.addAllowedHeader("*");
+    //    config.setMaxAge(3600L);
+    //
+    //    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource(new PathPatternParser());
+    //    source.registerCorsConfiguration("/**", config);
+    //
+    //    return new CorsWebFilter(source);
+    //}
 
 }
