@@ -1,6 +1,15 @@
 <template>
     <div>
+        <h4 class="lighter">
+            <i class="ace-icon fa fa-hand-o-right icon-animated-hand-pointer blue"></i>
+            <router-link to="/business/course" class="pink"> {{course.name}} </router-link>
+        </h4>
+        <hr>
         <p>
+            <router-link to="/business/course" class="btn btn-white btn-default btn-round">
+                <i class="ace-icon fa fa-arrow-left"></i>
+                返回课程
+            </router-link>
             <button v-on:click="add()" class="btn btn-white btn-default btn-round">
                 <i class="ace-icon fa fa-edit"></i>
                 新增
@@ -92,9 +101,9 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label  class="col-sm-2 control-label">课程ID</label>
+                                <label  class="col-sm-2 control-label">课程</label>
                                 <div class="col-sm-10">
-                                    <input  class="form-control" v-model="chapter.courseId"  placeholder="课程ID">
+                                    <p class="form-control-static"> {{course.name}}</p>
                                 </div>
                             </div>
                         </form>
@@ -118,13 +127,22 @@
         data: function() {
             return {
                 chapter:{},
-                chapters:[]
+                chapters:[],
+                course:{},
             }
 
         },
         mounted: function() {
-            let _this = this
-            _this.list()
+            let _this = this;
+            _this.$refs.pagination.size = 5;
+            let course = SessionStorage.get(SESSION_KEY_COURSE) || {};
+            if (Tool.isEmpty(course)) {
+                _this.$router.push("/welcome");
+            }
+            _this.course = course;
+            _this.list(1);
+            // sidebar激活样式方法一
+            // this.$parent.activeSidebar("business-course-sidebar");
         },
         methods:{
             add() {
@@ -141,30 +159,37 @@
            /**
            * 列表查询
            */
-          list(page) {
-            let _this = this;
-            this.$ajax.post(process.env.VUE_APP_SERVER + '/business/admin/chapter/list',{
-                page: page,
-                size: _this.$refs.pagination.size,
-            }).then((response)=>{
-             console.log("查询大章结果："+JSON.stringify(response))
-                _this.chapters = response.data.content.list
-                _this.$refs.pagination.render(page, response.data.content.total);
-            })
-          },
+            /**
+             * 列表查询
+             */
+            list(page) {
+                let _this = this;
+                Loading.show();
+                _this.$ajax.post(process.env.VUE_APP_SERVER + '/business/admin/chapter/list', {
+                    page: page,
+                    size: _this.$refs.pagination.size,
+                    courseId: _this.course.id
+                }).then((response)=>{
+                    Loading.hide();
+                    let resp = response.data;
+                    _this.chapters = resp.content.list;
+                    _this.$refs.pagination.render(page, resp.content.total);
+
+                })
+            },
             save(page) {
                 let _this = this;
 
                 // 保存校验
-                // if (!Validator.require(_this.chapter.name, "名称")
-                //     || !Validator.length(_this.chapter.courseId, "课程ID", 1, 8)) {
-                //     return;
-                // }
-                // _this.chapter.courseId = _this.course.id;
+                if (!Validator.require(_this.chapter.name, "名称")
+                    || !Validator.length(_this.chapter.courseId, "课程ID", 1, 8)) {
+                    return;
+                }
+                _this.chapter.courseId = _this.course.id;
                 //
-                // Loading.show();
+                Loading.show();
                 _this.$ajax.post(process.env.VUE_APP_SERVER + '/business/admin/chapter/save', _this.chapter).then((response)=>{
-                    // Loading.hide();
+                    Loading.hide();
                     // console.log("save"+JSON.stringify(response))
                     let resp = response.data;
                     if (resp.success) {
