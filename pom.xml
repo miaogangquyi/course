@@ -76,15 +76,17 @@
                 <artifactId>pagehelper-spring-boot-starter</artifactId>
                 <version>1.2.10</version>
             </dependency>
+            <!-- mybatis-plus-->
             <dependency>
                 <groupId>com.baomidou</groupId>
                 <artifactId>mybatis-plus-boot-starter</artifactId>
                 <version>3.4.0</version>
             </dependency>
+            <!-- mybatis-plus-generator -->
             <dependency>
                 <groupId>com.baomidou</groupId>
-                <artifactId>mybatis-plus-extension</artifactId>
-                <version>3.4.0</version><!-- 这个版本号一定要和mybatisplus的主版本号一致 -->
+                <artifactId>mybatis-plus-generator</artifactId>
+                <version>3.4.0</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
