@@ -1,6 +1,6 @@
 package com.course.server.domain;
 
-public class Chapter {
+public class Chapter  {
     private String id;
 
     private String courseId;

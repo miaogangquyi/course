@@ -23,7 +23,7 @@ public class ChapterController {
     @RequestMapping("/list")
     public ResponseDto list(@RequestBody ChapterPageDto chapterPageDto) {
         ResponseDto responseDto = new ResponseDto();
-        ValidatorUtil.require(chapterPageDto.getCourseId(), "课程ID");
+        //ValidatorUtil.require(chapterPageDto.getCourseId(), "课程ID");
         chapterService.list(chapterPageDto);
         responseDto.setContent(chapterPageDto);
         return responseDto;

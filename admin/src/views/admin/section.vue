@@ -37,14 +37,15 @@
       <tr v-for="section in sections">
         <td>{{section.id}}</td>
         <td>{{section.title}}</td>
-        <td>{{section.courseId}}</td>
-        <td>{{section.chapterId}}</td>
         <td>{{section.video}}</td>
         <td>{{section.time}}</td>
-        <td>{{section.charge}}</td>
+          <td>{{SECTION_CHARGE | optionKV(section.charge)}}</td>
         <td>{{section.sort}}</td>
       <td>
         <div class="hidden-sm hidden-xs btn-group">
+          <button v-on:click="play(section)" class="btn btn-xs btn-info">
+              <i class="ace-icon fa fa-video-camera bigger-120"></i>
+          </button>
           <button v-on:click="edit(section)" class="btn btn-xs btn-info">
             <i class="ace-icon fa fa-pencil bigger-120"></i>
           </button>
@@ -67,8 +68,7 @@
           <div class="modal-body">
             <form class="form-horizontal">
               <div class="form-group">
-                <label class="col-sm-2 control-label">标题
-</label>
+                <label class="col-sm-2 control-label">标题</label>
                 <div class="col-sm-10">
                   <input v-model="section.title" class="form-control">
                 </div>
@@ -97,12 +97,14 @@
                   <input v-model="section.time" class="form-control">
                 </div>
               </div>
-              <div class="form-group">
-                <label class="col-sm-2 control-label">收费</label>
-                <div class="col-sm-10">
-                  <input v-model="section.charge" class="form-control">
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">收费</label>
+                    <div class="col-sm-10">
+                        <select v-model="section.charge" class="form-control">
+                            <option v-for="o in SECTION_CHARGE" v-bind:value="o.key">{{o.value}}</option>
+                        </select>
+                    </div>
                 </div>
-              </div>
               <div class="form-group">
                 <label class="col-sm-2 control-label">顺序</label>
                 <div class="col-sm-10">
@@ -128,8 +130,9 @@
     name: "business-section",
     data: function() {
       return {
-        section: {},
-        sections: [],
+          section: {},
+          sections: [],
+          SECTION_CHARGE: SECTION_CHARGE,
           course: {},
           chapter: {},
       }
@@ -235,7 +238,15 @@
             }
           })
         });
-      }
+      },
+        /**
+         * 播放视频
+         * @param section
+         */
+        play(section) {
+            let _this = this;
+            _this.$refs.modalPlayer.playVod(section.vod);
+        }
     }
   }
 </script>
