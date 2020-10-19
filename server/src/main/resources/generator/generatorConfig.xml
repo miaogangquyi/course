@@ -45,7 +45,7 @@
 <!--        <table tableName="course" domainObjectName="Course"/>-->
 <!--        <table tableName="course_content" domainObjectName="CourseContent"/>-->
 <!--        <table tableName="course_content_file" domainObjectName="CourseContentFile"/>-->
-<!--        <table tableName="teacher" domainObjectName="Teacher"/>-->
+        <table tableName="teacher" domainObjectName="Teacher"/>
 <!--        <table tableName="file" domainObjectName="File"/>-->
 <!--        <table tableName="user" domainObjectName="User"/>-->
 <!--        <table tableName="resource" domainObjectName="Resource"/>-->
@@ -54,6 +54,6 @@
 <!--        <table tableName="role_user" domainObjectName="RoleUser"/>-->
 <!--        <table tableName="member" domainObjectName="Member"/>-->
 <!--        <table tableName="sms" domainObjectName="Sms"/>-->
-        <table tableName="category" domainObjectName="Category"/>
+<!--        <table tableName="category" domainObjectName="Category"/>-->
     </context>
 </generatorConfiguration>
