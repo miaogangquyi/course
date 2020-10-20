@@ -9,25 +9,21 @@ import com.course.server.util.CopyUtil;
 import com.course.server.util.UuidUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import java.util.ArrayList;
+import javax.annotation.Resource;
 import java.util.List;
-import java.util.stream.Collectors;
 
-/**
- * @Author: miaogang
- * @Date: 2020年09月17日
- * @Description: 测试类
- */
 @Service
 public class ChapterService {
-    @Autowired
-    ChapterMapper chapterMapper;
 
+    @Resource
+    private ChapterMapper chapterMapper;
+
+    /**
+     * 列表查询
+     */
     public void list(ChapterPageDto chapterPageDto) {
         PageHelper.startPage(chapterPageDto.getPage(), chapterPageDto.getSize());
         ChapterExample chapterExample = new ChapterExample();
@@ -38,16 +34,10 @@ public class ChapterService {
         List<Chapter> chapterList = chapterMapper.selectByExample(chapterExample);
         PageInfo<Chapter> pageInfo = new PageInfo<>(chapterList);
         chapterPageDto.setTotal(pageInfo.getTotal());
-        List<ChapterDto> chapterDtoList = new ArrayList<ChapterDto>();
-        chapterDtoList = chapterList.stream().map(this::convert).collect(Collectors.toList());
+        List<ChapterDto> chapterDtoList = CopyUtil.copyList(chapterList, ChapterDto.class);
         chapterPageDto.setList(chapterDtoList);
     }
 
-    private ChapterDto convert(Chapter chapter) {
-        ChapterDto chapterDto = new ChapterDto();
-        BeanUtils.copyProperties(chapter,chapterDto);
-        return chapterDto;
-    }
     /**
      * 保存，id有值时更新，无值时新增
      */
@@ -59,6 +49,7 @@ public class ChapterService {
             this.update(chapter);
         }
     }
+
     /**
      * 新增
      */
@@ -74,8 +65,21 @@ public class ChapterService {
         chapterMapper.updateByPrimaryKey(chapter);
     }
 
+    /**
+     * 删除
+     */
     public void delete(String id) {
         chapterMapper.deleteByPrimaryKey(id);
     }
-}
 
+    /**
+     * 查询某一课程下的所有章
+     */
+    public List<ChapterDto> listByCourse(String courseId) {
+        ChapterExample example = new ChapterExample();
+        example.createCriteria().andCourseIdEqualTo(courseId);
+        List<Chapter> chapterList = chapterMapper.selectByExample(example);
+        List<ChapterDto> chapterDtoList = CopyUtil.copyList(chapterList, ChapterDto.class);
+        return chapterDtoList;
+    }
+}

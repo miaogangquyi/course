@@ -35,6 +35,17 @@
             <h3 class="search-title">
               <a href="#" class="blue">{{course.name}}</a>
             </h3>
+
+            <div v-for="teacher in teachers.filter(t=>{return t.id===course.teacherId})" class="profile-activity clearfix">
+              <div>
+                <img v-show="!teacher.image" class="pull-left" src="/ace/assets/images/avatars/avatar5.png">
+                <img v-show="teacher.image" class="pull-left" v-bind:src="teacher.image">
+                <a class="user" href="#"> {{teacher.name}} </a>
+                <br>
+                {{teacher.position}}
+              </div>
+            </div>
+
             <p>
               <span class="blue bolder bigger-150">{{course.price}}&nbsp;<i class="fa fa-rmb"></i></span>&nbsp;
             </p>
@@ -55,7 +66,7 @@
                 排序
               </button>&nbsp;
               <button v-on:click="edit(course)" class="btn btn-xs btn-info">
-              <i class="ace-icon fa fa-pencil bigger-120"></i>
+                <i class="ace-icon fa fa-pencil bigger-120"></i>
               </button>
               <button v-on:click="del(course.id)" class="btn btn-xs btn-danger">
                 <i class="ace-icon fa fa-trash-o bigger-120"></i>
@@ -65,45 +76,6 @@
         </div>
       </div>
     </div>
-<!--    <table id="simple-table" class="table  table-bordered table-hover">-->
-<!--      <thead>-->
-<!--      <tr>-->
-<!--        <th>id</th>-->
-<!--        <th>名称</th>-->
-<!--        <th>概述</th>-->
-<!--        <th>时长</th>-->
-<!--        <th>价格</th>-->
-<!--        <th>封面</th>-->
-<!--        <th>级别</th>-->
-<!--        <th>收费</th>-->
-<!--        <th>状态</th>-->
-<!--        <th>报名数</th>-->
-<!--        <th>顺序</th>-->
-<!--        <th>操作</th>-->
-<!--      </tr>-->
-<!--      </thead>-->
-
-<!--      <tbody>-->
-<!--      <tr v-for="course in courses">-->
-<!--        <td>{{course.id}}</td>-->
-<!--        <td>{{course.name}}</td>-->
-<!--        <td>{{course.summary}}</td>-->
-<!--        <td>{{course.time}}</td>-->
-<!--        <td>{{course.price}}</td>-->
-<!--        <td>{{course.image}}</td>-->
-<!--        <td>{{COURSE_LEVEL | optionKV(course.level)}}</td>-->
-<!--        <td>{{COURSE_CHARGE | optionKV(course.charge)}}</td>-->
-<!--        <td>{{COURSE_STATUS | optionKV(course.status)}}</td>-->
-<!--        <td>{{course.enroll}}</td>-->
-<!--        <td>{{course.sort}}</td>-->
-<!--      <td>-->
-<!--        <div class="hidden-sm hidden-xs btn-group">-->
-
-<!--        </div>-->
-<!--      </td>-->
-<!--      </tr>-->
-<!--      </tbody>-->
-<!--    </table>-->
 
     <div id="form-modal" class="modal fade" tabindex="-1" role="dialog">
       <div class="modal-dialog" role="document">
@@ -115,15 +87,46 @@
           <div class="modal-body">
             <form class="form-horizontal">
               <div class="form-group">
+                <label class="col-sm-2 control-label">
+                  分类
+                </label>
+                <div class="col-sm-10">
+                  <ul id="tree" class="ztree"></ul>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label">封面</label>
+                <div class="col-sm-10">
+                  <big-file v-bind:input-id="'image-upload'"
+                            v-bind:text="'上传封面'"
+                            v-bind:suffixs="['jpg', 'jpeg', 'png']"
+                            v-bind:use="FILE_USE.COURSE.key"
+                            v-bind:after-upload="afterUpload"></big-file>
+                  <div v-show="course.image" class="row">
+                    <div class="col-md-6">
+                      <img v-bind:src="course.image" class="img-responsive">
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
                 <label class="col-sm-2 control-label">名称</label>
                 <div class="col-sm-10">
                   <input v-model="course.name" class="form-control">
                 </div>
               </div>
               <div class="form-group">
+                <label class="col-sm-2 control-label">讲师</label>
+                <div class="col-sm-10">
+                  <select v-model="course.teacherId" class="form-control">
+                    <option v-for="o in teachers" v-bind:value="o.id">{{o.name}}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
                 <label class="col-sm-2 control-label">概述</label>
                 <div class="col-sm-10">
-                  <input v-model="course.summary" class="form-control">
+                  <textarea v-model="course.summary" class="form-control"></textarea>
                 </div>
               </div>
               <div class="form-group">
@@ -133,15 +136,9 @@
                 </div>
               </div>
               <div class="form-group">
-                <label class="col-sm-2 control-label">价格</label>
+                <label class="col-sm-2 control-label">价格（元）</label>
                 <div class="col-sm-10">
                   <input v-model="course.price" class="form-control">
-                </div>
-              </div>
-              <div class="form-group">
-                <label class="col-sm-2 control-label">封面</label>
-                <div class="col-sm-10">
-                  <input v-model="course.image" class="form-control">
                 </div>
               </div>
               <div class="form-group">
@@ -177,7 +174,7 @@
               <div class="form-group">
                 <label class="col-sm-2 control-label">顺序</label>
                 <div class="col-sm-10">
-                  <input v-model="course.sort" class="form-control">
+                  <input v-model="course.sort" class="form-control" disabled>
                 </div>
               </div>
             </form>
@@ -189,13 +186,55 @@
         </div><!-- /.modal-content -->
       </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
+
+    <div id="course-sort-modal" class="modal fade" tabindex="-1" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">排序</h4>
+          </div>
+          <div class="modal-body">
+            <form class="form-horizontal">
+              <div class="form-group">
+                <label class="control-label col-lg-3">
+                  当前排序
+                </label>
+                <div class="col-lg-9">
+                  <input class="form-control" v-model="sort.oldSort" name="oldSort" disabled>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label col-lg-3">
+                  新排序
+                </label>
+                <div class="col-lg-9">
+                  <input class="form-control" v-model="sort.newSort" name="newSort">
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-white btn-default btn-round" data-dismiss="modal">
+              <i class="ace-icon fa fa-times"></i>
+              取消
+            </button>
+            <button type="button" class="btn btn-white btn-info btn-round" v-on:click="updateSort()">
+              <i class="ace-icon fa fa-plus blue"></i>
+              更新排序
+            </button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
   </div>
 </template>
 
 <script>
   import Pagination from "../../components/pagination";
+  import BigFile from "../../components/big-file";
   export default {
-    components: {Pagination},
+    components: {Pagination, BigFile},
     name: "business-course",
     data: function() {
       return {
@@ -204,14 +243,26 @@
         COURSE_LEVEL: COURSE_LEVEL,
         COURSE_CHARGE: COURSE_CHARGE,
         COURSE_STATUS: COURSE_STATUS,
+        FILE_USE: FILE_USE,
+        categorys: [],
+        tree: {},
+        saveContentLabel: "",
+        sort: {
+          id: "",
+          oldSort: 0,
+          newSort: 0
+        },
+        teachers: [],
       }
     },
     mounted: function() {
       let _this = this;
       _this.$refs.pagination.size = 5;
+      _this.allCategory();
+      _this.allTeacher();
       _this.list(1);
       // sidebar激活样式方法一
-      this.$parent.activeSidebar("business-course-sidebar");
+      // this.$parent.activeSidebar("business-course-sidebar");
 
     },
     methods: {
@@ -220,7 +271,10 @@
        */
       add() {
         let _this = this;
-        _this.course = {};
+        _this.course = {
+          sort: _this.$refs.pagination.total + 1
+        };
+        _this.tree.checkAllNodes(false);
         $("#form-modal").modal("show");
       },
 
@@ -230,6 +284,7 @@
       edit(course) {
         let _this = this;
         _this.course = $.extend({}, course);
+        _this.listCategory(course.id);
         $("#form-modal").modal("show");
       },
 
@@ -254,18 +309,25 @@
       /**
        * 点击【保存】
        */
-      save() {
+      save(page) {
         let _this = this;
 
         // 保存校验
         if (1 != 1
-          || !Validator.require(_this.course.name, "名称")
-          || !Validator.length(_this.course.name, "名称", 1, 50)
-          || !Validator.length(_this.course.summary, "概述", 1, 2000)
-          || !Validator.length(_this.course.image, "封面", 1, 100)
+                || !Validator.require(_this.course.name, "名称")
+                || !Validator.length(_this.course.name, "名称", 1, 50)
+                || !Validator.length(_this.course.summary, "概述", 1, 2000)
+                || !Validator.length(_this.course.image, "封面", 1, 100)
         ) {
           return;
         }
+
+        let categorys = _this.tree.getCheckedNodes();
+        if (Tool.isEmpty(categorys)) {
+          Toast.warning("请选择分类！");
+          return;
+        }
+        _this.course.categorys = categorys;
 
         Loading.show();
         _this.$ajax.post(process.env.VUE_APP_SERVER + '/business/admin/course/save', _this.course).then((response)=>{
@@ -298,6 +360,7 @@
           })
         });
       },
+
       /**
        * 点击【大章】
        */
@@ -315,9 +378,119 @@
         SessionStorage.set(SESSION_KEY_COURSE, course);
         _this.$router.push("/business/content");
       },
+
+      allCategory() {
+        let _this = this;
+        Loading.show();
+        _this.$ajax.post(process.env.VUE_APP_SERVER + '/business/admin/category/all').then((response)=>{
+          Loading.hide();
+          let resp = response.data;
+          _this.categorys = resp.content;
+
+          _this.initTree();
+        })
+      },
+
+      initTree() {
+        let _this = this;
+        let setting = {
+          check: {
+            enable: true
+          },
+          data: {
+            simpleData: {
+              idKey: "id",
+              pIdKey: "parent",
+              rootPId: "00000000",
+              enable: true
+            }
+          }
+        };
+
+        let zNodes = _this.categorys;
+
+        _this.tree = $.fn.zTree.init($("#tree"), setting, zNodes);
+
+        // 展开所有的节点
+        // _this.tree.expandAll(true);
+      },
+
+      /**
+       * 查找课程下所有分类
+       * @param courseId
+       */
+      listCategory(courseId) {
+        let _this = this;
+        Loading.show();
+        _this.$ajax.post(process.env.VUE_APP_SERVER + '/business/admin/course/list-category/' + courseId).then((res)=>{
+          Loading.hide();
+          console.log("查找课程下所有分类结果：", res);
+          let response = res.data;
+          let categorys = response.content;
+
+          // 勾选查询到的分类
+          _this.tree.checkAllNodes(false);
+          for (let i = 0; i < categorys.length; i++) {
+            let node = _this.tree.getNodeByParam("id", categorys[i].categoryId);
+            _this.tree.checkNode(node, true);
+          }
+        })
+      },
+
+      openSortModal(course) {
+        let _this = this;
+        _this.sort = {
+          id: course.id,
+          oldSort: course.sort,
+          newSort: course.sort
+        };
+        $("#course-sort-modal").modal("show");
+      },
+
+      /**
+       * 排序
+       */
+      updateSort() {
+        let _this = this;
+        if (_this.sort.newSort === _this.sort.oldSort) {
+          Toast.warning("排序没有变化");
+          return;
+        }
+        Loading.show();
+        _this.$ajax.post(process.env.VUE_APP_SERVER + "/business/admin/course/sort", _this.sort).then((res) => {
+          let response = res.data;
+
+          if (response.success) {
+            Toast.success("更新排序成功");
+            $("#course-sort-modal").modal("hide");
+            _this.list(1);
+          } else {
+            Toast.error("更新排序失败");
+          }
+        });
+      },
+
+      allTeacher() {
+        let _this = this;
+        Loading.show();
+        _this.$ajax.post(process.env.VUE_APP_SERVER + '/business/admin/teacher/all').then((response)=>{
+          Loading.hide();
+          debugger
+          let resp = response.data;
+          _this.teachers = resp.content;
+        })
+      },
+
+      afterUpload(resp) {
+        let _this = this;
+        let image = resp.content.path;
+        _this.course.image = image;
+      },
+
     }
   }
 </script>
+
 <style scoped>
   .caption h3 {
     font-size: 20px;

@@ -22,13 +22,14 @@ public class SectionService {
 
     @Resource
     private SectionMapper sectionMapper;
+
     @Resource
     private CourseService courseService;
 
     /**
      * 列表查询
      */
-    public void list(SectionPageDto  sectionPageDto) {
+    public void list(SectionPageDto sectionPageDto) {
         PageHelper.startPage(sectionPageDto.getPage(), sectionPageDto.getSize());
         SectionExample sectionExample = new SectionExample();
         SectionExample.Criteria criteria = sectionExample.createCriteria();
@@ -84,5 +85,16 @@ public class SectionService {
      */
     public void delete(String id) {
         sectionMapper.deleteByPrimaryKey(id);
+    }
+
+    /**
+     * 查询某一课程下的所有节
+     */
+    public List<SectionDto> listByCourse(String courseId) {
+        SectionExample example = new SectionExample();
+        example.createCriteria().andCourseIdEqualTo(courseId);
+        List<Section> sectionList = sectionMapper.selectByExample(example);
+        List<SectionDto> sectionDtoList = CopyUtil.copyList(sectionList, SectionDto.class);
+        return sectionDtoList;
     }
 }

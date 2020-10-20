@@ -23,6 +23,16 @@ public class Section {
 
     private Date updatedAt;
 
+    private String vod;
+
+    public String getVod() {
+        return vod;
+    }
+
+    public void setVod(String vod) {
+        this.vod = vod;
+    }
+
     public String getId() {
         return id;
     }
