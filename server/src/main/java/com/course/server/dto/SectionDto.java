@@ -1,7 +1,8 @@
 package com.course.server.dto;
 
-import java.util.Date;
 import com.fasterxml.jackson.annotation.JsonFormat;
+
+import java.util.Date;
 
 public class SectionDto {
 
@@ -57,6 +58,15 @@ public class SectionDto {
      */
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date updatedAt;
+    private String vod;
+
+    public String getVod() {
+        return vod;
+    }
+
+    public void setVod(String vod) {
+        this.vod = vod;
+    }
 
     public String getId() {
         return id;
