@@ -1,7 +1,7 @@
 <template>
   <div>
     <p>
-      <button v-on:click="add()" class="btn btn-white btn-default btn-round">
+      <button v-show="hasResource('010101')" v-on:click="add()" class="btn btn-white btn-default btn-round">
         <i class="ace-icon fa fa-edit"></i>
         新增
       </button>
@@ -17,8 +17,8 @@
     <table id="simple-table" class="table  table-bordered table-hover">
       <thead>
       <tr>
-        <th>ID</th>
-        <th>登录名</th>
+        <th>id</th>
+        <th>登陆名</th>
         <th>昵称</th>
         <th>密码</th>
         <th>操作</th>
@@ -31,16 +31,19 @@
         <td>{{user.loginName}}</td>
         <td>{{user.name}}</td>
         <td>{{user.password}}</td>
-      <td>
-        <div class="hidden-sm hidden-xs btn-group">
-          <button v-on:click="edit(user)" class="btn btn-xs btn-info">
-            <i class="ace-icon fa fa-pencil bigger-120"></i>
-          </button>
-          <button v-on:click="del(user.id)" class="btn btn-xs btn-danger">
-            <i class="ace-icon fa fa-trash-o bigger-120"></i>
-          </button>
-        </div>
-      </td>
+        <td>
+          <div class="hidden-sm hidden-xs btn-group">
+            <button  v-on:click="editPassword(user)" class="btn btn-xs btn-info">
+              <i class="ace-icon fa fa-key bigger-120"></i>
+            </button>
+            <button  v-on:click="edit(user)" class="btn btn-xs btn-info">
+              <i class="ace-icon fa fa-pencil bigger-120"></i>
+            </button>
+            <button  v-on:click="del(user.id)" class="btn btn-xs btn-danger">
+              <i class="ace-icon fa fa-trash-o bigger-120"></i>
+            </button>
+          </div>
+        </td>
       </tr>
       </tbody>
     </table>
@@ -55,9 +58,9 @@
           <div class="modal-body">
             <form class="form-horizontal">
               <div class="form-group">
-                <label class="col-sm-2 control-label">登录名</label>
+                <label class="col-sm-2 control-label">登陆名</label>
                 <div class="col-sm-10">
-                  <input v-model="user.loginName" class="form-control">
+                  <input v-model="user.loginName" v-bind:disabled="user.id" class="form-control">
                 </div>
               </div>
               <div class="form-group">
@@ -66,10 +69,10 @@
                   <input v-model="user.name" class="form-control">
                 </div>
               </div>
-              <div class="form-group">
+              <div v-show="!user.id" class="form-group">
                 <label class="col-sm-2 control-label">密码</label>
                 <div class="col-sm-10">
-                  <input v-model="user.password" class="form-control">
+                  <input v-model="user.password" type="password" class="form-control">
                 </div>
               </div>
             </form>
@@ -77,6 +80,37 @@
           <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
             <button v-on:click="save()" type="button" class="btn btn-primary">保存</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+    <div id="edit-password-modal" class="modal fade" tabindex="-1" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">修改密码</h4>
+          </div>
+          <div class="modal-body">
+            <form class="form-horizontal">
+              <div class="form-group">
+                <label class="control-label col-sm-2">密码</label>
+                <div class="col-sm-10">
+                  <input class="form-control" type="password" v-model="user.password" name="password">
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-white btn-default btn-round" data-dismiss="modal">
+              <i class="ace-icon fa fa-times"></i>
+              取消
+            </button>
+            <button type="button" class="btn btn-white btn-info btn-round" v-on:click="savePassword()">
+              <i class="ace-icon fa fa-plus blue"></i>
+              保存密码
+            </button>
           </div>
         </div><!-- /.modal-content -->
       </div><!-- /.modal-dialog -->
@@ -104,6 +138,14 @@
 
     },
     methods: {
+      /**
+       * 查找是否有权限
+       * @param id
+       */
+      hasResource(id) {
+        return Tool.hasResource(id);
+      },
+
       /**
        * 点击【新增】
        */
@@ -148,15 +190,15 @@
 
         // 保存校验
         if (1 != 1
-          || !Validator.require(_this.user.loginName, "登录名")
-          || !Validator.length(_this.user.loginName, "登录名", 1, 100)
-          || !Validator.length(_this.user.name, "昵称", 1, 100)
-          || !Validator.require(_this.user.password, "密码")
-          || !Validator.length(_this.user.password, "密码", 1, 50)
+                || !Validator.require(_this.user.loginName, "登陆名")
+                || !Validator.length(_this.user.loginName, "登陆名", 1, 50)
+                || !Validator.length(_this.user.name, "昵称", 1, 50)
+                || !Validator.require(_this.user.password, "密码")
         ) {
           return;
         }
 
+        _this.user.password = hex_md5(_this.user.password + KEY);
         Loading.show();
         _this.$ajax.post(process.env.VUE_APP_SERVER + '/system/admin/user/save', _this.user).then((response)=>{
           Loading.hide();
@@ -176,7 +218,7 @@
        */
       del(id) {
         let _this = this;
-        Confirm.show("删除 用户后不可恢复，确认删除？", function () {
+        Confirm.show("删除用户表后不可恢复，确认删除？", function () {
           Loading.show();
           _this.$ajax.delete(process.env.VUE_APP_SERVER + '/system/admin/user/delete/' + id).then((response)=>{
             Loading.hide();
@@ -187,7 +229,38 @@
             }
           })
         });
-      }
+      },
+
+      /**
+       * 点击【重置密码】
+       */
+      editPassword(user) {
+        let _this = this;
+        _this.user = $.extend({}, user);
+        _this.user.password = null;
+        $("#edit-password-modal").modal("show");
+      },
+
+      /**
+       * 点击【保存密码】
+       */
+      savePassword() {
+        let _this = this;
+
+        _this.user.password = hex_md5(_this.user.password + KEY);
+        Loading.show();
+        _this.$ajax.post(process.env.VUE_APP_SERVER + '/system/admin/user/save-password', _this.user).then((response)=>{
+          Loading.hide();
+          let resp = response.data;
+          if (resp.success) {
+            $("#edit-password-modal").modal("hide");
+            _this.list(1);
+            Toast.success("保存成功！");
+          } else {
+            Toast.warning(resp.message)
+          }
+        })
+      },
     }
   }
 </script>

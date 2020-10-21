@@ -26,7 +26,7 @@
       <tr>
         <th>ID</th>
         <th>标题</th>
-        <th>VOD</th>
+        <th>视频</th>
         <th>时长</th>
         <th>收费</th>
         <th>顺序</th>
@@ -38,7 +38,7 @@
       <tr v-for="section in sections">
         <td>{{section.id}}</td>
         <td>{{section.title}}</td>
-        <td>{{section.vod}}</td>
+        <td>{{section.video}}</td>
         <td>{{section.time | formatSecond}}</td>
         <td>{{SECTION_CHARGE | optionKV(section.charge)}}</td>
         <td>{{section.sort}}</td>
@@ -231,9 +231,10 @@
        * 点击【保存】
        */
       save(page) {
+        // debugger
         let _this = this;
 
-        _this.section.video = "";
+        // _this.section.video = "";
         // 保存校验
         if (1 != 1
                 || !Validator.require(_this.section.title, "标题")
@@ -278,7 +279,6 @@
       },
 
       afterUpload(resp) {
-        debugger
         let _this = this;
         let video = resp.content.path;
         let vod = resp.content.vod;
@@ -305,7 +305,8 @@
        */
       play(section) {
         let _this = this;
-        _this.$refs.modalPlayer.playVod(section.vod);
+        _this.$refs.player.playUrl(section.video)
+        // _this.$refs.modalPlayer.playVod(section.vod);
       }
     }
   }

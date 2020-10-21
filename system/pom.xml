@@ -43,6 +43,7 @@
             <groupId>com.mg</groupId>
             <artifactId>server</artifactId>
         </dependency>
+
     </dependencies>
 
 
