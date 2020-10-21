@@ -10,7 +10,7 @@ import Section from "./views/admin/section.vue"
 import Content from "./views/admin/content.vue"
 import Teacher from "./views/admin/teacher.vue"
 import File from "./views/admin/file.vue"
-// import User from "./views/admin/user.vue"
+import User from "./views/admin/user.vue"
 // import Resource from "./views/admin/resource.vue"
 // import Role from "./views/admin/role.vue"
 // import Member from "./views/admin/member.vue"
@@ -69,6 +69,10 @@ export default new Router({
             path: "file/file",
             name: "file/file",
             component: File,
+        },{
+            path: "system/user",
+            name: "system/user",
+            component: User,
         }
         ]
         // , {
