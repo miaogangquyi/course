@@ -9,6 +9,7 @@ public enum BusinessExceptionCode {
     MOBILE_CODE_TOO_FREQUENT("短信请求过于频繁"),
     MOBILE_CODE_ERROR("短信验证码不正确"),
     MOBILE_CODE_EXPIRED("短信验证码不存在或已过期，请重新发送短信"),
+    USER_NOT_LOGIN("用户未登录或TOKEN过期,请重新登录"),
     ;
 
     private String desc;

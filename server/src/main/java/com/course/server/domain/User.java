@@ -1,5 +1,7 @@
 package com.course.server.domain;
 
+import java.util.List;
+
 public class User {
     private String id;
 
@@ -9,6 +11,7 @@ public class User {
 
     private String password;
 
+    List<String> roles;
     public String getId() {
         return id;
     }
@@ -41,17 +44,11 @@ public class User {
         this.password = password;
     }
 
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(getClass().getSimpleName());
-        sb.append(" [");
-        sb.append("Hash = ").append(hashCode());
-        sb.append(", id=").append(id);
-        sb.append(", loginName=").append(loginName);
-        sb.append(", name=").append(name);
-        sb.append(", password=").append(password);
-        sb.append("]");
-        return sb.toString();
+    public List<String> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<String> roles) {
+        this.roles = roles;
     }
 }

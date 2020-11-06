@@ -1,4 +1,4 @@
-package com.course.business.controller;
+package com.course.system.handler;
 
 import com.course.server.exception.BusinessException;
 import com.course.server.exception.ValidatorException;
@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
+
 
 @ControllerAdvice
 public class ControllerExceptionHandler {

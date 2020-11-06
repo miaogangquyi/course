@@ -43,7 +43,10 @@
             <groupId>com.mg</groupId>
             <artifactId>server</artifactId>
         </dependency>
-
+        <dependency>
+            <groupId>com.auth0</groupId>
+            <artifactId>java-jwt</artifactId>
+        </dependency>
     </dependencies>
 
 
